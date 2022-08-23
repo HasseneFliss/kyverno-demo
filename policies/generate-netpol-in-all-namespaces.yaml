@@ -1,0 +1,28 @@
+#THIS SETS CREATE A NETPOL ACROSS ALL NAMESPACES
+
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: generate-resources
+spec:
+  generateExistingOnPolicyUpdate: true
+  rules:
+  - name: generate-existing-networkpolicy
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+    generate:
+      kind: NetworkPolicy
+      name: default-deny
+      namespace: "{{request.object.metadata.name}}"
+      synchronize: true
+      data:
+        metadata:
+          labels:
+            created-by: kyverno-jera
+        spec:
+          podSelector: {}
+          policyTypes:
+          - Egress

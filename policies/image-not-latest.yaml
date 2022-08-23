@@ -1,3 +1,5 @@
+#VALIDATE POLICY FOR SECURITY
+
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
