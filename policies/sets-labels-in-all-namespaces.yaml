@@ -1,0 +1,23 @@
+#THIS SETS LABELS ACROSS ALL NAMESPACES
+
+apiVersion: kyverno.io/v1
+kind: ClusterPolicyS
+metadata:
+  name: label-namespaces
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+  - name: label-existing-namespaces
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+    mutate:
+      targets:
+        - apiVersion: v1
+          kind: Namespace
+      patchStrategicMerge:
+        metadata:
+          labels:
+            mykey: kyverno-demo-jera
